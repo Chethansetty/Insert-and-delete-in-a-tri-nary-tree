@@ -1,0 +1,89 @@
+
+/**
+ *
+ * @author vishal
+ * 
+ * Limitation : it can solve within this limit -2^63 to 2^63-1 
+ */
+public class StringToLong {
+
+    public static long stringToLong(String s) {
+        
+        /* code goes here to convert a string to a long */
+        
+        long result = 0;
+        boolean negative = false;
+        
+        try {
+            
+            if (s.length() == 0 || s == null || s.length()>20) {
+                /**
+                 * I am not sure what you expect to return in this case. 
+                 * As it's not mentioned in the question.
+                 * 
+                 * Currently throwing an exception
+                 */
+                throw new Exception();
+            }
+            
+            char arr[] = s.toCharArray();
+            double digit;
+            
+            int i=0;
+          
+            //check for negative number
+            if(arr[0] == '-')
+            {
+                negative = true;
+                i=1;
+            }
+            
+            // convert the charaters to long
+            for (; i < arr.length; i++) {
+                if (!((arr[i] >= 48 && arr[i] <= 57) || arr[i] == '.')) {
+                    throw new Exception();
+                }  
+                 else {
+                    digit = (int) arr[i]-48;
+                    result = (long)((result * 10) + digit);
+                }
+            }
+            
+        } catch (Exception e) {
+            System.out.println("Invalid Input. String should contain characters from 0-9 and value less than 9,223,372,036,854,775,807 (2^63 -1)");
+        } 
+        
+        return negative==true ? -result:result;
+    }
+
+    /**
+     * couple of test case for code
+     */
+    public static void main(String args[]) 
+    {
+        long i = stringToLong("-1231234567");
+        if (i == -1231234567) {
+            // success
+            System.out.println("Sucess");
+        } else {
+            // failure
+            System.out.println("Failure");
+        }
+        
+        
+        i = stringToLong("1231234567");
+        if (i == 1231234567) {
+            // success
+            System.out.println("Sucess");
+        } else {
+            // failure
+            System.out.println("Failure");
+        }
+        
+        i = stringToLong("");
+        i = stringToLong(null);
+        i = stringToLong("asdfghh");
+        i = stringToLong("!@#$%^WERTG@#$%EDRFTG12345");
+        i = stringToLong("12345123asd");
+    }
+}
