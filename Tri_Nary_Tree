@@ -1,0 +1,303 @@
+
+/**
+ * @author vishal
+ * 
+ * Code to Implement insert and delete in a tri-nary tree. A tri-nary tree is much like a binary
+ * tree but with three child nodes for each parent instead of two -- with the left node being values
+ * less than the parent, the right node values greater than the parent, and the middle nodes values
+ * equal to the parent. 
+ * 
+ */
+
+
+/*
+*
+* Class Node to store 
+* 
+* Data  : value
+* link to left : left
+* link to right : right
+* link to middle : middle
+* 
+* */
+class Node {
+
+    public int value;
+    public Node left;
+    public Node right;
+    public Node middle;
+
+    Node() 
+    {
+        left = null;
+        right = null;
+        middle = null;
+    }
+
+    Node(int value) 
+    {
+        this.value = value;
+        left = null;
+        right = null;
+        middle = null;
+    }
+}
+
+public class Tri_Nary_Tree {
+    static Node head;
+
+    Tri_Nary_Tree()
+    {
+        head = null;
+    }
+    public void insert(Node head, int value) {
+        if (head == null) {
+            //System.out.println("null");
+            Tri_Nary_Tree.head = new Node(value);
+            return;
+        } 
+        
+        //check for middle node
+        else if (head.value == value) {
+        
+            // if middle is empty insert there
+            if (head.middle == null) {
+                head.middle = new Node(value);
+            } 
+            
+            /**
+             * Middle is not empty There exists an element create a new node add
+             * it in beginning
+             */
+            else {
+                Node temp = new Node(value);
+                temp.middle = head.middle;
+                head.middle = temp;
+            }
+        } 
+        
+        /**
+         * If head is greater than value move towards left
+         *
+         * If left is empty add new node
+         *
+         */
+        else if (head.value > value) {
+            if (head.left != null) {
+                insert(head.left, value);
+            } else {
+                head.left = new Node(value);
+            }
+        } /**
+         * If head is less than value move towards right
+         *
+         * If right is empty add new node
+         *
+         */
+        else if (head.value < value) {
+            if (head.right != null) {
+                insert(head.right, value);
+            } else {
+                head.right = new Node(value);
+            }
+        }
+    }
+
+    /**
+     * method to delete an element from the tree
+     * 
+     * @param data 
+     */
+    public void delete(int data) {
+        deleteNode(head, null, data);
+    }
+
+    public void deleteNode(Node head, Node parent, int data) {
+        if (head == null) 
+        {
+            return;
+        } 
+        else if (head.value == data) {
+            /*
+             * If middle doesn't have some values
+             */
+            if (head.middle == null) {
+                
+                /*
+                 * If right element is not null
+                 * Search for min in the right subtree and replace
+                 */
+                
+                //check for single node case
+                if(parent == null && head.left == null && head.right == null)
+                {
+                    Tri_Nary_Tree.head = null;
+                    return;
+                }
+                // when right is not null
+                
+                else if (head.right != null) {
+                    /**
+                     * move minimum to head
+                     * */
+                    
+                    Node min = findMin(head.right, head);
+                    
+                    head.value = min.value;
+                    head.middle = min.middle;
+                    return;
+                } 
+                
+                /*
+                 * If right is null 
+                 * Remove the head
+                 */ 
+                else {
+                    if (parent == null) {
+                        Node temp = head.left;
+                        head.left = null;
+                        head.value = temp.value;
+                    } else if (parent.left!=null && parent.left.value == data) {
+                        parent.left = null;
+                    } else {
+                        parent.right = null;
+                    }
+                }
+            } 
+            /*
+             * If middle has values
+             * 
+             * remove one node from middle
+             */ 
+            else 
+            {
+                Node temp = head.middle;
+                if(temp.middle!=null)
+                    head.middle = temp.middle;
+                else
+                    head.middle = null;                
+            }
+        } 
+        
+        /*
+         * check for value and traverse tree accordingly
+         */ 
+        
+        else if (head.value > data) {
+            deleteNode(head.left, head, data);
+        } else {
+            deleteNode(head.right, head, data);
+        }
+    }
+
+    /**
+     * Method to find minimum in the right subtree of head
+     *
+     * @param head : head of tree
+     * @param parent : parent of head
+     * @return : minimum element of head
+     */
+    public Node findMin(Node head, Node parent) {
+        if (head.left == null) {
+            if (parent == null) {
+                return head;
+            } else if (head.right != null) {
+                parent.left = head.right;
+            } else {
+                 if (parent.left.value == head.value) {
+                        parent.left = null;
+                    } else {
+                        parent.right = null;
+                    }
+            }
+            return head;
+        }
+        return findMin(head.left, head);
+    }
+
+    /**
+     * 
+     * Inorder, Preorder and PostOrder traversal
+     */
+    public void inorder(Node head) {
+        if (head == null) {
+            return;
+        }
+
+        inorder(head.left);
+        System.out.println(head.value);
+        inorder(head.right);
+    }
+
+    public void preOrder(Node head) {
+        if (head == null) {
+            return;
+        }
+
+        System.out.println(head.value);
+        preOrder(head.left);
+        preOrder(head.right);
+    }
+
+    public void postOrder(Node head) {
+        if (head == null) {
+            return;
+        }
+
+        postOrder(head.left);
+        postOrder(head.right);
+        System.out.println(head.value);
+
+    }
+
+    /*
+     * couple of test cases to test the code
+     */
+    public static void main(String args[]) {
+
+        Tri_Nary_Tree t = new Tri_Nary_Tree();
+        
+        t.insert(t.head,10);
+        t.insert(t.head,6);
+        t.insert(t.head,3);
+        t.insert(t.head,3);
+        t.insert(t.head,2);
+        t.insert(t.head,4);
+        t.insert(t.head,9);
+        t.insert(t.head,9);
+        t.insert(t.head,7);
+        t.insert(t.head,8);
+        t.insert(t.head,15);
+        t.insert(t.head,15);
+        t.insert(t.head,15);
+        t.insert(t.head,15);
+        t.insert(t.head,13);
+        t.insert(t.head,13);
+        t.insert(t.head,12);
+        t.insert(t.head,14);
+        t.insert(t.head,17);
+        t.insert(t.head,17);
+        t.insert(t.head,16);
+        t.insert(t.head,18);
+        
+        
+        t.delete(15);
+        t.delete(15);
+        t.delete(15);
+        t.delete(15);
+        t.delete(2);
+        t.delete(18);
+        t.delete(8);
+        t.delete(10);
+
+        System.out.println("Inorder ");
+        t.inorder(t.head);
+        System.out.println();
+        System.out.println("Preorder ");
+        t.preOrder(t.head);
+        System.out.println();
+        System.out.println("Postorder ");
+        t.postOrder(t.head);
+        System.out.println();
+    }
+}
