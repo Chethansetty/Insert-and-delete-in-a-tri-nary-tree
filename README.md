@@ -1,7 +1,7 @@
 ZillowSDETest
 =============
 
-Question 1) Given a string, write a routine that converts the string to a long, without using the 
+1) Given a string, write a routine that converts the string to a long, without using the 
 built in functions that would do this. Describe what (if any) limitations the code has. For 
 example: 
  
@@ -19,7 +19,7 @@ void test()
  // failure 
 } 
  
-Question 2) Implement insert and delete in a tri-nary tree. A tri-nary tree is much like a binary 
+2) Implement insert and delete in a tri-nary tree. A tri-nary tree is much like a binary 
 tree but with three child nodes for each parent instead of two -- with the left node being values 
 less than the parent, the right node values greater than the parent, and the middle nodes values 
 equal to the parent. 
