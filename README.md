@@ -1,5 +1,3 @@
-ZillowSDETest
-=============
 
 1) Given a string, write a routine that converts the string to a long, without using the 
 built in functions that would do this. Describe what (if any) limitations the code has. For 
